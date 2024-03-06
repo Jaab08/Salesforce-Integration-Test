@@ -1,11 +1,10 @@
 from simple_salesforce import Salesforce
 import os
 
-sf = Salesforce(username=os.environ['SF_USERNAME'],
-                password=os.environ['SF_PASSWORD'],
-                security_token=os.environ['SF_SECURITY_TOKEN'],
-                client_id=os.environ['SF_CONSUMER_KEY'],
-                client_secret=os.environ['SF_CONSUMER_SECRET'])
+sf = Salesforce(username='jesuan@itp.com',
+                password='Jesus080498',
+                consumer_key='3MVG9p1Q1BCe9GmA7_t1bydTwSMU2cQRuFZGYYYpnfs8_x2wGrtWJxOStK5qPr_D.SbdyttnGhnHpZ_C_ffTz', 
+                consumer_secret='142765CA1DC090A57CC6E94B39487D13E3ECFF782A28D63CA15EA161B290A049')
 
 with open('articleTest.html', 'r') as html_file:
     html_content = html_file.read()
