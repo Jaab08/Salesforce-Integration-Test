@@ -31,4 +31,4 @@ jobs:
         SF_CONSUMER_KEY: ${{ secrets.SF_CONSUMER_KEY }}
         SF_CONSUMER_SECRET: ${{ secrets.SF_CONSUMER_SECRET }}
       run: |
-        python send_to_salesforce.py
+        python enviar_a_salesforce.py
