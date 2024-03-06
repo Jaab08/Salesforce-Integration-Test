@@ -12,6 +12,7 @@ with open('articleTest.html', 'r') as html_file:
 # Ajusta los campos según tu modelo de datos en Salesforce
 response = sf.Knowledge__kav.create({
     'Title': 'Título del Artículo de Prueba',
+    'UrlName': 'Título-del-Artículo-de-Prueba',
     'Answer__c': html_content,
     # Añade otros campos necesarios aquí
 })
