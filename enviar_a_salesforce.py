@@ -1,5 +1,4 @@
 from simple_salesforce import Salesforce
-import os
 
 sf = Salesforce(username='jesuan@itp.com',
                 password='Jesus080498',
