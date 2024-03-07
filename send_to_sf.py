@@ -14,8 +14,15 @@ sf = Salesforce(username=username, password=password, security_token=security_to
 update_batch = []
 create_batch = []
 
-print(sys.argv)
-for file_name in sys.argv[1:]:
+# El primer argumento es el nombre del archivo que contiene los nombres de los archivos modificados
+filename = sys.argv[1]
+
+with open(filename, 'r') as f:
+    # Crea una lista donde cada elemento es una línea (nombre de archivo) del archivo, eliminando espacios blancos y saltos de línea
+    modified_files = [line.strip() for line in f]
+
+print(modified_files)
+for file_name in modified_files:
     with open(file_name, 'r', encoding='utf-8') as file:
         html_content = file.read()
         # Escapa comillas simples para evitar inyección de SOQL
