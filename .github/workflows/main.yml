@@ -26,7 +26,7 @@ jobs:
     - name: Identificar archivos HTML modificados
       id: files
       run: |
-        echo "::set-output name=modified_files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.html$')"
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.html$' | xargs -I {} echo \"{}\" > modified_files.txt
         
     - name: Enviar HTML a Salesforce
       env:
@@ -36,4 +36,6 @@ jobs:
         SF_CONSUMER_KEY: ${{ secrets.SF_CONSUMER_KEY }}
         SF_CONSUMER_SECRET: ${{ secrets.SF_CONSUMER_SECRET }}
       run: |
-        python send_to_sf.py ${{ steps.files.outputs.modified_files }}
+        while IFS= read -r line; do
+          python send_to_sf.py "$line"
+        done < modified_files.txt
