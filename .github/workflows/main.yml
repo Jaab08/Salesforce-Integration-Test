@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Hace un fetch completo de todas las ramas
 
     - name: Establecer Python
       uses: actions/setup-python@v2
