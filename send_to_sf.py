@@ -45,7 +45,9 @@ for file_name in modified_files:
 # Realizar operaciones bulk
 if update_batch:
     responseU = sf.bulk.Knowledge__kav.update(update_batch)
-    print('Update: ' + responseU)
+    print('--Update--')
+    print(responseU)
 if create_batch:
     responseC = sf.bulk.Knowledge__kav.insert(create_batch)
-    print('Create: ' + responseC)
+    print('--Create--')
+    print(responseC)
