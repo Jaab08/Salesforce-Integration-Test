@@ -14,7 +14,7 @@ sf = Salesforce(username=username, password=password, security_token=security_to
 update_batch = []
 create_batch = []
 
-print(sys.argv[1])
+print(sys.argv)
 for file_name in sys.argv[1]:
     with open(file_name, 'r', encoding='utf-8') as file:
         html_content = file.read()
