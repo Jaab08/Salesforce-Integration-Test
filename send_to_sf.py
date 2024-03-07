@@ -27,11 +27,12 @@ for file_name in modified_files:
         html_content = file.read()
         # Escapa comillas simples para evitar inyección de SOQL
         article_title = escape(file_name.replace('.html', '').replace("'", "\\'"))
+        print(article_title)
         # Genera UrlName reemplazando espacios por guiones
         url_name = article_title.replace(' ', '-')
 
         # Buscar si existe un artículo con ese título
-        articles = sf.query_all("SELECT Id, Title FROM Knowledge__kav WHERE Title = '{article_title}' LIMIT 1")
+        articles = sf.query_all(f"SELECT Id, Title FROM Knowledge__kav WHERE Title = '{article_title}' LIMIT 1")
         print(articles)
         
         if articles['totalSize'] > 0:
