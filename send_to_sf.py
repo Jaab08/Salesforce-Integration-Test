@@ -37,8 +37,7 @@ for file_name in sys.argv[1:]:
 # Realizar operaciones bulk
 if update_batch:
     responseU = sf.bulk.Knowledge__kav.update(update_batch)
+    print(responseU)
 if create_batch:
     responseC = sf.bulk.Knowledge__kav.insert(create_batch)
-
-print(responseU)
-print(responseC)
+    print(responseC)
