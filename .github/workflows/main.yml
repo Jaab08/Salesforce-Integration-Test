@@ -26,7 +26,9 @@ jobs:
     - name: Identificar archivos HTML modificados
       id: files
       run: |
-        git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.html$' > modified_files.txt
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }} > all_changes.txt
+        grep '\.html$' all_changes.txt > modified_files.txt
+        cat modified_files.txt # Para propósitos de diagnóstico
         
     - name: Enviar HTML a Salesforce
       env:
