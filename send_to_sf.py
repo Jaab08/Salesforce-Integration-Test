@@ -15,7 +15,7 @@ update_batch = []
 create_batch = []
 
 print(sys.argv)
-for file_name in sys.argv[1]:
+for file_name in sys.argv[1:]:
     with open(file_name, 'r', encoding='utf-8') as file:
         html_content = file.read()
         # Escapa comillas simples para evitar inyección de SOQL
