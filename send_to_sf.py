@@ -32,6 +32,7 @@ for file_name in modified_files:
 
         # Buscar si existe un artículo con ese título
         articles = sf.query_all("SELECT Id, Title FROM Knowledge__kav WHERE Title = '{article_title}' LIMIT 1")
+        print(articles)
         
         if articles['totalSize'] > 0:
             # Si el artículo existe, prepáralo para actualizar
@@ -44,7 +45,7 @@ for file_name in modified_files:
 # Realizar operaciones bulk
 if update_batch:
     responseU = sf.bulk.Knowledge__kav.update(update_batch)
-    print(responseU)
+    print('Update: ' + responseU)
 if create_batch:
     responseC = sf.bulk.Knowledge__kav.insert(create_batch)
-    print(responseC)
+    print('Create: ' + responseC)
