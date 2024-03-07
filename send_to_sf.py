@@ -14,7 +14,8 @@ sf = Salesforce(username=username, password=password, security_token=security_to
 update_batch = []
 create_batch = []
 
-for file_name in sys.argv[1:]:
+print(sys.argv[1])
+for file_name in sys.argv[1]:
     with open(file_name, 'r', encoding='utf-8') as file:
         html_content = file.read()
         # Escapa comillas simples para evitar inyección de SOQL
@@ -35,6 +36,9 @@ for file_name in sys.argv[1:]:
 
 # Realizar operaciones bulk
 if update_batch:
-    sf.bulk.Knowledge__kav.update(update_batch)
+    responseU = sf.bulk.Knowledge__kav.update(update_batch)
 if create_batch:
-    sf.bulk.Knowledge__kav.insert(create_batch)
+    responseC = sf.bulk.Knowledge__kav.insert(create_batch)
+
+print(responseU)
+print(responseC)
