@@ -11,12 +11,7 @@ username = os.getenv('SF_USERNAME')
 password = os.getenv('SF_PASSWORD') + os.getenv('SF_SECURITY_TOKEN')
 auth_url = 'https://login.salesforce.com/services/oauth2/token'
 
-# ----- Headers y data para autorizacion -----
-headers = {
-    'Authorization': f'Bearer {sf_auth_token}',
-    'Content-Type': 'application/json'
-}
-
+# ----- Data para autorizacion -----
 data = {
     'grant_type': 'password',
     'client_id': consumer_key,
@@ -71,7 +66,7 @@ for file_name in modified_files:
         }
 
         # Realizar solicitud POST
-        response = requests.post(sf_endpoint, json=data, headers=headers)
+        response = requests.post(service_url, json=data, headers=headers)
 
         # Verificar si la solicitud fue exitosa
         if response.status_code == 200 or response.status_code == 201:
