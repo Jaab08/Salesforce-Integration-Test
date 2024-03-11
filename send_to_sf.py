@@ -71,6 +71,6 @@ for file_name in modified_files:
         # Verificar si la solicitud fue exitosa
         if response.status_code == 200 or response.status_code == 201:
             # print(f'Artículo procesado exitosamente: {article_title}')
-            print(response.json())
+            print(f'200 - {response.json()}')
         else:
             print(f'Error al procesar el artículo {article_title}: {response.json()}')
