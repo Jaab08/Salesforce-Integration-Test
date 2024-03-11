@@ -1,18 +1,51 @@
 import sys
 import os
-from simple_salesforce import Salesforce, bulk
+import requests
+import json
 from html import escape
 
 # Configuración inicial
+consumer_key = os.getenv('SF_CONSUMER_KEY')
+consumer_secret = os.getenv('SF_CONSUMER_SECRET')
 username = os.getenv('SF_USERNAME')
-password = os.getenv('SF_PASSWORD')
-security_token = os.getenv('SF_SECURITY_TOKEN')
+password = os.getenv('SF_PASSWORD') + os.getenv('SF_SECURITY_TOKEN')
+auth_url = 'https://login.salesforce.com/services/oauth2/token'
 
-# Autenticación
-sf = Salesforce(username=username, password=password, security_token=security_token)
+# ----- Headers y data para autorizacion -----
+headers = {
+    'Authorization': f'Bearer {sf_auth_token}',
+    'Content-Type': 'application/json'
+}
 
-update_batch = []
-create_batch = []
+data = {
+    'grant_type': 'password',
+    'client_id': consumer_key,
+    'client_secret': consumer_secret,
+    'username': username,
+    'password': password
+}
+
+# Solicitud de autenticación
+response = requests.post(auth_url, data=data)
+
+# Verificar si la solicitud fue exitosa
+if response.status_code == 200:
+    # Extraer token
+    access_token = response.json().get('access_token')
+    instance_url = response.json().get('instance_url')
+    print("Token de Acceso Obtenido:", access_token)
+    print("URL de la Instancia:", instance_url)
+else:
+    print("Error al obtener el token de acceso:", response.text)
+
+# ----- Header para peticion al webservice -----
+headers = {
+    'Authorization': f'Bearer {access_token}',
+    'Content-Type': 'application/json'
+}
+
+# Webservice Url
+service_url = f'{instance_url}/services/apexrest/knowledgeService'
 
 # El primer argumento es el nombre del archivo que contiene los nombres de los archivos modificados
 filename = sys.argv[1]
@@ -31,24 +64,18 @@ for file_name in modified_files:
         # Genera UrlName reemplazando espacios por guiones
         url_name = article_title.replace(' ', '-')
 
-        # Buscar si existe un artículo con ese título
-        articles = sf.query_all(f"SELECT Id, Title FROM Knowledge__kav WHERE Title = '{article_title}' LIMIT 1")
-        print(articles)
-        
-        if articles['totalSize'] > 0:
-            # Si el artículo existe, prepáralo para actualizar
-            article_id = articles['records'][0]['Id']
-            update_batch.append({'Id': article_id, 'Answer__c': html_content})
-        else:
-            # Si el artículo no existe, prepáralo para crear
-            create_batch.append({'Title': article_title, 'UrlName': url_name, 'Answer__c': html_content})
+        # Datos para enviar al webservice
+        data = {
+            'answerId': article_title,
+            'content': html_content
+        }
 
-# Realizar operaciones bulk
-if update_batch:
-    responseU = sf.bulk.Knowledge__kav.update(update_batch)
-    print('--Update--')
-    print(responseU)
-if create_batch:
-    responseC = sf.bulk.Knowledge__kav.insert(create_batch)
-    print('--Create--')
-    print(responseC)
+        # Realizar solicitud POST
+        response = requests.post(sf_endpoint, json=data, headers=headers)
+
+        # Verificar si la solicitud fue exitosa
+        if response.status_code == 200 or response.status_code == 201:
+            # print(f'Artículo procesado exitosamente: {article_title}')
+            print(response.json())
+        else:
+            print(f'Error al procesar el artículo {article_title}: {response.json()}')
