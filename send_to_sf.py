@@ -62,7 +62,7 @@ for file_name in modified_files:
         # Datos para enviar al webservice
         data = {
             'answerId': article_title,
-            'content': html_content
+            'html': html_content
         }
 
         # Realizar solicitud POST
