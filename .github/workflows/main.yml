@@ -30,7 +30,7 @@ jobs:
     - name: Identificar archivos HTML modificados
       id: files
       run: |
-        git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '\.html$' > modified_files.txt
+        git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '\.html$' > modified_files.txt || true
         if [ ! -s modified_files.txt ]; then
           echo "No HTML files modified."
           echo "exit" >> $GITHUB_ENV
