@@ -30,11 +30,14 @@ jobs:
     - name: Identificar archivos HTML modificados
       id: files
       run: |
-        echo ${{ github.event.before }}
-        echo ${{ github.sha }}
         git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '\.html$' > modified_files.txt
+        if [ ! -s modified_files.txt ]; then
+          echo "No HTML files modified."
+          echo "exit" >> $GITHUB_ENV
+        fi
         
     - name: Enviar HTML a Salesforce
+      if: env.exit != 'exit'
       env:
         SF_USERNAME: ${{ secrets.SF_USERNAME }}
         SF_PASSWORD: ${{ secrets.SF_PASSWORD }}
