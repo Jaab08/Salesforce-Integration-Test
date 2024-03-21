@@ -73,4 +73,5 @@ for file_name in modified_files:
             # print(f'Artículo procesado exitosamente: {article_title}')
             print(f'Successful - {response.content}')
         else:
-            print(f'Error al procesar el artículo {article_title}: {response.text}')
+            raise Exception('Error al procesar los artículos:', response.text)
+            #print(f'Error al procesar el artículo {article_title}: {response.text}')
